@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Package } from 'lucide-react';
 import AddInventoryForm from '@/components/inventory/AddInventoryForm';
 import BillSummary from '@/components/inventory/BillSummary';
+import RecentBills from '@/components/inventory/RecentBills';
 import { Bill } from '@/types/inventory';
 
 const Index = () => {
@@ -11,6 +12,11 @@ const Index = () => {
 
   const handleBillCreated = (bill: Bill) => {
     setBills([bill, ...bills]);
+    setCurrentBill(bill);
+    setShowBillSummary(true);
+  };
+
+  const handleViewBill = (bill: Bill) => {
     setCurrentBill(bill);
     setShowBillSummary(true);
   };
@@ -40,7 +46,10 @@ const Index = () => {
         {showBillSummary && currentBill ? (
           <BillSummary bill={currentBill} onBack={handleBackFromSummary} />
         ) : (
-          <AddInventoryForm onBillCreated={handleBillCreated} />
+          <>
+            <AddInventoryForm onBillCreated={handleBillCreated} />
+            <RecentBills bills={bills} onViewBill={handleViewBill} />
+          </>
         )}
       </main>
     </div>
